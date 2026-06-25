@@ -124,10 +124,32 @@
         return;
       }
 
-      // Demo: no backend — show success. Wire this to your endpoint / email service.
+      // Static site (no backend): open the visitor's email app pre-addressed to us.
+      const recipient = "safevolts.gr@gmail.com";
+      const data = {
+        name: form.elements["name"].value.trim(),
+        phone: form.elements["phone"].value.trim(),
+        email: email.value.trim(),
+        service: form.elements["service"].value.trim(),
+        message: form.elements["message"].value.trim(),
+      };
+
+      const subject = "Νέο αίτημα από την ιστοσελίδα" + (data.service ? " – " + data.service : "");
+      const body =
+        "Ονοματεπώνυμο: " + data.name + "\n" +
+        "Τηλέφωνο: " + data.phone + "\n" +
+        "Email: " + (data.email || "—") + "\n" +
+        "Υπηρεσία: " + (data.service || "—") + "\n\n" +
+        "Μήνυμα:\n" + (data.message || "—");
+
+      const mailto =
+        "mailto:" + recipient +
+        "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+
       note.className = "form-note success";
-      note.textContent = "Ευχαριστούμε! Λάβαμε το αίτημά σας και θα επικοινωνήσουμε σύντομα.";
-      form.reset();
+      note.textContent = "Ανοίγει η εφαρμογή email σας για να ολοκληρώσετε την αποστολή. Αν δεν ανοίξει, καλέστε μας στο 210 444 1581.";
+      window.location.href = mailto;
     });
 
     // Clear invalid state while typing
