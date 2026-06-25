@@ -90,8 +90,12 @@
   const form = document.getElementById("contact-form");
   const note = document.getElementById("form-note");
 
+  const WEB3FORMS_KEY = "0e4d9313-0023-40dc-b379-2c563d29b112";
+
   if (form) {
-    form.addEventListener("submit", (e) => {
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
       note.className = "form-note";
       note.textContent = "";
@@ -124,7 +128,6 @@
         return;
       }
 
-      // Static site (no backend): open the visitor's email app pre-addressed to us.
       const recipient = "safevolts.gr@gmail.com";
       const data = {
         name: form.elements["name"].value.trim(),
@@ -134,23 +137,76 @@
         message: form.elements["message"].value.trim(),
       };
 
+      // Honeypot: if a bot filled the hidden field, silently "succeed" and stop.
+      if (form.elements["botcheck"] && form.elements["botcheck"].checked) {
+        note.className = "form-note success";
+        note.textContent = "Ευχαριστούμε!";
+        form.reset();
+        return;
+      }
+
       const subject = "Νέο αίτημα από την ιστοσελίδα" + (data.service ? " – " + data.service : "");
-      const body =
-        "Ονοματεπώνυμο: " + data.name + "\n" +
-        "Τηλέφωνο: " + data.phone + "\n" +
-        "Email: " + (data.email || "—") + "\n" +
-        "Υπηρεσία: " + (data.service || "—") + "\n\n" +
-        "Μήνυμα:\n" + (data.message || "—");
 
-      const mailto =
-        "mailto:" + recipient +
-        "?subject=" + encodeURIComponent(subject) +
-        "&body=" + encodeURIComponent(body);
+      // Fallback: open the visitor's email app pre-addressed to us.
+      const openMailto = () => {
+        const body =
+          "Ονοματεπώνυμο: " + data.name + "\n" +
+          "Τηλέφωνο: " + data.phone + "\n" +
+          "Email: " + (data.email || "—") + "\n" +
+          "Υπηρεσία: " + (data.service || "—") + "\n\n" +
+          "Μήνυμα:\n" + (data.message || "—");
+        window.location.href =
+          "mailto:" + recipient +
+          "?subject=" + encodeURIComponent(subject) +
+          "&body=" + encodeURIComponent(body);
+      };
 
-      note.className = "form-note success";
-      note.textContent = "Ανοίγει η εφαρμογή email σας για να ολοκληρώσετε την αποστολή. Αν δεν ανοίξει, καλέστε μας στο 210 444 1581.";
-      window.location.href = mailto;
+      // Primary: send straight to the inbox via Web3Forms (no email app needed).
+      setBusy(true);
+      note.className = "form-note";
+      note.textContent = "Αποστολή…";
+
+      try {
+        const res = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_KEY,
+            subject: subject,
+            from_name: "Safe Volts — Ιστοσελίδα",
+            name: data.name,
+            "Ονοματεπώνυμο": data.name,
+            "Τηλέφωνο": data.phone,
+            email: data.email || recipient,
+            replyto: data.email || "",
+            "Υπηρεσία": data.service || "—",
+            message: data.message || "—",
+          }),
+        });
+        const out = await res.json().catch(() => ({}));
+
+        if (res.ok && out.success) {
+          note.className = "form-note success";
+          note.textContent = "Ευχαριστούμε! Λάβαμε το αίτημά σας και θα επικοινωνήσουμε σύντομα.";
+          form.reset();
+        } else {
+          throw new Error(out.message || "send failed");
+        }
+      } catch (err) {
+        note.className = "form-note error";
+        note.textContent = "Παρουσιάστηκε πρόβλημα. Ανοίγουμε την εφαρμογή email σας…";
+        openMailto();
+      } finally {
+        setBusy(false);
+      }
     });
+
+    function setBusy(busy) {
+      if (!submitBtn) return;
+      submitBtn.disabled = busy;
+      submitBtn.dataset.label = submitBtn.dataset.label || submitBtn.textContent;
+      submitBtn.textContent = busy ? "Αποστολή…" : submitBtn.dataset.label;
+    }
 
     // Clear invalid state while typing
     form.querySelectorAll("input, textarea").forEach((el) => {
