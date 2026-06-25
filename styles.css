@@ -88,6 +88,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   background: linear-gradient(180deg, var(--brand), var(--brand-2)); color: #1a1300;
   box-shadow: 0 8px 20px -8px rgba(255, 201, 48, 0.7);
 }
+.brand-logo { display: block; flex: none; width: 46px; height: 46px; }
+.site-footer .brand-logo { width: 42px; height: 42px; }
 .brand-text { letter-spacing: -0.03em; }
 .brand-accent { color: var(--brand); }
 
