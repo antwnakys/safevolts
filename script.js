@@ -58,12 +58,13 @@
   const counters = document.querySelectorAll("[data-count]");
   const runCounter = (el) => {
     const target = parseInt(el.dataset.count, 10) || 0;
+    const suffix = el.dataset.suffix || "";
     const dur = 1400;
     const start = performance.now();
     const step = (now) => {
       const p = Math.min((now - start) / dur, 1);
       const eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(target * eased).toLocaleString("el-GR");
+      el.textContent = Math.round(target * eased).toLocaleString("el-GR") + suffix;
       if (p < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
@@ -83,7 +84,7 @@
     );
     counters.forEach((el) => cio.observe(el));
   } else {
-    counters.forEach((el) => (el.textContent = el.dataset.count));
+    counters.forEach((el) => (el.textContent = el.dataset.count + (el.dataset.suffix || "")));
   }
 
   // Contact form (client-side validation + demo submit)
