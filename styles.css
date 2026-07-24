@@ -310,3 +310,34 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   .hero-trust { gap: 20px; }
   .cta-inner { padding: 40px 22px; }
 }
+
+/* ===== Service subpages ===== */
+.breadcrumb { padding: 22px 0 0; font-size: 0.88rem; color: var(--muted); }
+.breadcrumb ol { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.breadcrumb li { display: flex; align-items: center; gap: 8px; }
+.breadcrumb li:not(:last-child)::after { content: "›"; color: var(--muted); opacity: 0.6; }
+.breadcrumb a { color: var(--muted); }
+.breadcrumb a:hover { color: var(--brand); }
+.breadcrumb [aria-current] { color: var(--text); font-weight: 600; }
+
+.service-hero { padding: 34px 0 8px; }
+.service-hero h1 { font-size: clamp(1.9rem, 4.5vw, 3rem); font-weight: 800; margin-bottom: 16px; }
+.service-hero .lead { max-width: 720px; }
+.service-hero .hero-actions { margin-top: 26px; }
+
+.prose { max-width: 760px; }
+.prose h2 { font-size: clamp(1.35rem, 2.6vw, 1.7rem); margin: 36px 0 12px; }
+.prose h3 { font-size: 1.12rem; margin: 24px 0 8px; }
+.prose p { color: var(--muted); margin-bottom: 14px; }
+.prose ul.checklist { margin: 18px 0 8px; }
+.prose strong { color: var(--text); }
+
+.related { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+.related a {
+  border: 1px solid var(--line); border-radius: 999px; padding: 9px 16px; font-weight: 600;
+  font-size: 0.92rem; color: var(--text); background: rgba(255,255,255,0.02); transition: border-color .2s, color .2s;
+}
+.related a:hover { border-color: var(--brand); color: var(--brand); }
+
+.service-more { display: inline-block; margin-top: 12px; font-weight: 700; font-size: 0.9rem; color: var(--brand); transition: gap .2s; }
+.service-more:hover { text-decoration: underline; }
