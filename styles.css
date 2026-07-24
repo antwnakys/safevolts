@@ -341,3 +341,19 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 .service-more { display: inline-block; margin-top: 12px; font-weight: 700; font-size: 0.9rem; color: var(--brand); transition: gap .2s; }
 .service-more:hover { text-decoration: underline; }
+
+/* ===== Google Business button ===== */
+.google-btn {
+  display: flex; align-items: center; gap: 14px; margin-top: 22px;
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 18px;
+  transition: border-color .2s, transform .2s var(--ease), box-shadow .2s;
+}
+.google-btn:hover { border-color: rgba(255,255,255,0.22); transform: translateY(-2px); box-shadow: var(--shadow); }
+.google-btn .g-ic { flex: none; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; background: #fff; }
+.google-btn .g-text { display: flex; flex-direction: column; line-height: 1.3; }
+.google-btn .g-text strong { color: var(--text); font-size: 1rem; }
+.google-btn .g-stars { color: var(--muted); font-size: 0.85rem; }
+.google-btn .g-stars .stars { color: #ffc930; letter-spacing: 1px; }
+.google-btn .g-arrow { margin-left: auto; color: var(--muted); font-weight: 700; transition: transform .2s; }
+.google-btn:hover .g-arrow { transform: translateX(3px); color: var(--brand); }
