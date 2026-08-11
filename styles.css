@@ -357,3 +357,27 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .google-btn .g-stars .stars { color: #ffc930; letter-spacing: 1px; }
 .google-btn .g-arrow { margin-left: auto; color: var(--muted); font-weight: 700; transition: transform .2s; }
 .google-btn:hover .g-arrow { transform: translateX(3px); color: var(--brand); }
+
+/* ===== Sticky mobile call bar ===== */
+.mobile-callbar { display: none; }
+@media (max-width: 760px) {
+  .mobile-callbar {
+    display: flex; gap: 10px; align-items: stretch;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 120;
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+    background: rgba(11, 18, 32, 0.94); backdrop-filter: blur(12px);
+    border-top: 1px solid var(--line);
+  }
+  .mcb-call {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 9px;
+    background: linear-gradient(180deg, var(--brand), var(--brand-2)); color: #1a1300;
+    font-weight: 800; font-size: 1.02rem; border-radius: 999px; padding: 14px 16px;
+    box-shadow: 0 10px 26px -12px rgba(255, 201, 48, 0.8);
+  }
+  .mcb-call span { font-variant-numeric: tabular-nums; }
+  .mcb-review {
+    flex: none; display: flex; align-items: center; gap: 5px;
+    background: #fff; color: #1a1300; font-weight: 800; border-radius: 999px; padding: 12px 15px;
+  }
+  body { padding-bottom: 78px; }
+}
